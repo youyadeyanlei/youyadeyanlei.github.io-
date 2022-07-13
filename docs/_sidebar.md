@@ -1,7 +1,7 @@
 <!-- docs/_sidebar.md -->
 
 * [首页](README)
-* [面向对象](guide.md)
+* [面向对象](01/oop/oop.md)
 * java技术
-   * [java](01/oop/)
-* []
+   * [javaoop](01/oop/oop.md)
+* [待更新]
