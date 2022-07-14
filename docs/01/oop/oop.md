@@ -60,11 +60,7 @@ class Cartoon {//创建一个动漫类
 
 ## 1.2内存分配
 
-![0.1](0.1/png)
 
-
-
-![avator](https://github.com/youyadeyanlei/youyadeyanlei.github.io-/blob/713/docs/01/oop/01.png)
 ![01](https://raw.githubusercontent.com/youyadeyanlei/youyadeyanlei.github.io-/713/docs/01/oop/01.png)
 
 
@@ -231,7 +227,9 @@ public class Test01 {
 
 ## 1.知识点图
 
-![0.2](https://github.com/youyadeyanlei/youyadeyanlei.github.io-/blob/713/docs/01/oop/0.2.png)
+
+
+![0.2](https://raw.githubusercontent.com/youyadeyanlei/youyadeyanlei.github.io-/713/docs/01/oop/0.2.png)
 
 ![0.2](0.2.png)
 
