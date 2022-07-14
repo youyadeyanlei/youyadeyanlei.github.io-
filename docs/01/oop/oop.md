@@ -62,7 +62,7 @@ class Cartoon {//创建一个动漫类
 
 
 
-![avator](/0.1.png)
+![avator](https://github.com/youyadeyanlei/youyadeyanlei.github.io-/blob/713/docs/01/oop/01.png)
 
 
 
