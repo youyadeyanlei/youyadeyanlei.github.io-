@@ -62,7 +62,7 @@ class Cartoon {//创建一个动漫类
 
 
 
-![01](D:\qian\youyadeyanlei.github.io-\docs\01.png)
+![01](D:\qian\youyadeyanlei.github.io-\docs\01\oop\01.png)
 
 
 
@@ -229,7 +229,7 @@ public class Test01 {
 
 ## 1.知识点图
 
-![Snipaste_2022-07-13_19-15-35](D:\qian\0630\Snipaste_2022-07-13_19-15-35.png)
+![0.2](D:\qian\youyadeyanlei.github.io-\docs\01\oop\0.2.png)
 
 ## 1.6方法和重载
 
