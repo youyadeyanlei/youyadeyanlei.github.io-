@@ -63,7 +63,7 @@ class Cartoon {//创建一个动漫类
 
 
 ![avator](https://github.com/youyadeyanlei/youyadeyanlei.github.io-/blob/713/docs/01/oop/01.png)
-
+![01](https://raw.githubusercontent.com/youyadeyanlei/youyadeyanlei.github.io-/713/docs/01/oop/01.png)
 
 
    1.分清什么是实例什么是对象。Class a= new Class();此时a叫实例，而不能说a是对象。
