@@ -1,4 +1,4 @@
-package cs.作业.Student;
+package cs.作业.biao;
 
 import java.util.Random;
 
