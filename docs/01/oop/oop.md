@@ -528,7 +528,402 @@ public class myfirst1 {
 }
 ```
 
-## 1.9多态
+## 1.9比较
+
+1.在基本数据类型的比较中==比较的是值
+
+```java
+ int a=10;
+ int b=10;
+if (a==b)
+```
+
+2.引用数据类型比较的是地址，
+
+```java
+Demo01 demo01 = new Demo01(1, 2);
+Demo01 demo011 = new Demo01(1, 3);
+//demo01==demo011，两个地址不一样
+```
+
+
+
+object的equals方法也是用的==比较，当要比较引用类型的时候要重写equsals方法
+
+```java
+public class Demo01 {
+
+    int x;
+    int y;
+
+    public Demo01(int x, int y) {
+    }
+
+    public boolean equals(Object obj) {
+        if (obj == null) return false;//判断空
+        Demo01 demo01;
+        if ((obj instanceof Demo01)) {
+            demo01 = (Demo01) obj;//强制转换
+            return (x == demo01.x && y == demo01.y);
+        }
+        return false;
+
+    }
+
+    public static void main(String[] args) {
+        Demo01 demo01 = new Demo01(1, 2);
+        Demo01 demo011 = new Demo01(1, 3);
+        
+        Demo01 demo012 = new Demo01(1, 3);
+        demo01.equals(demo011);
+        System.out.println(demo011.equals(demo012));
+
+    }
+}
+```
+
+
+
+
+
+
+
+## 2.0转型（向上转型，向下转型）
+
+转型分为向上和向下
+
+能做什么在左边，具体实现看右边
+
+1.继承关系中，子类转换为父类，为向上转型，自动完成，
+
+就比如父类为电器，子类为电磁炉，我可以说电磁炉是电器，
+
+2.父类转换为子类，为向下转型，要强制转换。
+
+电器不全是电磁炉，加上强制转换，就比如一个限定，在这个满是电磁炉的房间里，电器就是电磁炉。
+
+```java
+public class Demo05 {
+    public static void main(String[] args) {
+
+        Device device=new Cooker();
+        Device device1= device;//向上转型
+        Cooker a= (Cooker) device1;//向下转型
+    }
+    
+}
+//电器
+class Device{
+    
+}
+//电磁炉
+class Cooker extends Device{
+    
+}
+```
+
+
+
+
+
+3.基本数组类型中，小的可以转换为大的，比如 byte 可以转换为int，但是大的转换为小的要丢失精度。就比如，快递，你可以用大箱子来装小东西，但是小箱子装大大小，要先切割大大小来满足小箱子的空间。
+
+
+
+
+
+## 2.1抽象（抽象类，抽象方法）
+
+抽象就是一个概念，不能具体实现的。你可以理解为动物是一个抽象的概念，它摸不着看不见，但是你能理解的东西。
+
+在代码中的抽象类，
+
+1.抽象类不能有实列化的就比如，人是一个概念
+
+2.抽象类能有抽象方法，就比如人，可以进行吃。但是吃也是抽象的，你具体吃什么？
+
+3.抽象类存在的意义是用来，继承和扩展的。
+
+4.抽象类可以有具体的方法，比如人会动。
+
+5.抽象类可以被抽象类继承，就比如人，可以继承动物。
+
+注意，抽象类可以有抽象方法，抽象方法只能在抽象类中，子类要实现抽象方法。
+
+```java
+package cs.作业.Day715;
+
+public class Demo03 {
+    public static void main(String[] args) {
+        people a=new SoftwareEngineer();
+        Stage stage=new Stage(a);
+        stage.run();
+    }
+}
+
+class Stage{
+    private people p;
+
+    public Stage(people p) {
+        this.p = p;
+    }
+    public  void run(){
+        p.employ();
+    }
+}
+abstract class people{
+    String name;
+
+    abstract void employ();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+//软件工程师
+class SoftwareEngineer extends people{
+
+    @Override
+    void employ() {
+        super.setName("软件工程师");
+        System.out.println(getName());
+    }
+}
+//工人
+class worker extends  people{
+
+
+    @Override
+    void employ() {
+        super.setName("工人");
+        System.out.println(getName());
+    }
+}
+//农民
+class Farmer extends  people{
+
+    @Override
+    void employ() {
+        super.setName("农民");
+        System.out.println(getName());
+    }
+}
+```
+
+
+
+
+
+## 2.2多态
+
+一个方法，在不同情况下，有不同结果
+
+比如一个制造方法，提供不同的图纸，能够制造不同的东西。
+
+```java
+public class Demo04 {
+    public static void main(String[] args) {
+        Factory factory = new Components1();
+        Factory factory1 =new Components2();
+        Workshop worker = new Workshop();
+        worker.run(factory1);
+        worker.run(factory);
+        
+    }
+}
+
+//工厂
+abstract class Factory {
+    private String name;
+
+    abstract void make();//制造
+
+    public Factory() {
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+//零件1
+class Components1 extends Factory {
+
+    public Components1() {
+        super.setName("零件1");
+
+    }
+
+    void make() {//制造
+        System.out.println(this.getName());
+    }
+}
+
+//零件2
+class Components2 extends Factory {
+    public Components2() {
+        super.setName("零件2");
+
+    }
+
+    void make() {//制造
+        System.out.println(this.getName());
+    }
+}
+
+//制造车间
+class Workshop {
+    private Factory factory;
+
+    public static void run(Factory factory) {
+        factory.make();
+    }
+}
+```
+
+## 2.3修饰符
+
+final最终的，
+
+```java
+
+
+public class FinalMain {
+
+    // final 最终的
+    // 1、被final修饰的变量，具有"不可改变"的特性
+
+    // 2、修饰基本类型：其值不可以再进行修改
+    static void testPrimitive(){
+        final int n = 1;
+        // n = 2;
+    }
+
+    // 3、修饰引用类型
+    static void testReference() {
+        final Student stu = new Student();
+        // 可以改 - 地址没有变
+        stu.setName("A");
+        stu.setName("B");
+
+        // new一定是在内存中创建了一个新对象，所以地址会改变
+        // stu = new Student();
+    }
+
+}
+// 4、修饰类：这是这个类的最终版，不能被扩展和继承
+// 5、修饰方法：这是这个方法的最终版，不能被重写
+final class A {}
+
+// 6、final修饰的变量可以在构造器中进行第一次赋值初始化
+class B {
+    final String name;
+
+    public B() {
+        name = "Default name"; // 只能第一次去赋值初始化
+    }
+}
+```
+
+
+
+static
+
+```java
+package com.think.poly.modifier;
+
+public class StaticMain {
+
+    // 1、static修饰的变量，它不依赖类的实例而存在，一般直接通过类名进行调用，它是这个类的实例所有共有的（它只有一份）
+    // 2、static修饰方法
+    // 3、static方法只能引用静态变量和静态方法
+    // 4、static一般都"只执行一次"或者"只有一份"
+
+    static String name;
+    String msg;
+
+    static void testName() {
+        System.out.println(name);
+        // System.out.println(msg);
+        testXxx();
+        // 调用该方法，是不需要任何实例，也就是说不需要"对象.testName()",一般都是"类名.testName()"
+        // 如果能调用testYyy，那么它一定是有一个成员在执行这个方法，
+        // 程序流执行到这里就会无法找到这个具体的成员是谁
+        // testYyy();
+    }
+
+    static void testXxx() {
+        System.out.println("Xxx");
+    }
+
+    void testYyy() {
+        System.out.println("Yyy");
+    }
+
+    public static void main(String[] args) {
+        new Child();
+        new Child();
+        // 静态优先，父类型优先
+    }
+}
+
+class Parent {
+    static {
+        System.out.println("parent 静态代码块");
+    }
+    static T t1 = new T("parent static");
+    T t2 = new T("parent no-static");
+
+
+    public Parent() {
+        System.out.println("parent 构造");
+    }
+}
+
+class Child extends Parent {
+    static {
+        System.out.println("child 静态代码块");
+    }
+    static T t1 = new T("child static");
+    T t2 = new T("child no-static");
+    public Child() {
+        System.out.println("child 构造");
+    }
+}
+
+class T {
+    T(String msg) {
+        System.out.println(msg);
+    }
+}
+```
+
+
+
+## 2.4接口
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
