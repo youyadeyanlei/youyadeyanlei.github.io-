@@ -1169,6 +1169,55 @@ public class Test {
 
 
 
+## API
+
+### object类
+
+ •1 object类是所有类的超类、基类。位于继承树的最顶层。
+
+ •2、任何⼀个没有显⽰定义extends⽗类的类。都直接继承Object，否则就是间接继承 
+
+•3、任何⼀个类都可以享有Object提供的⽅法 
+
+•4、Object类可以代表任何⼀个类(多态)，可以作为⽅法的参数、⽅法的返回值
+
+
+
+####  getClass⽅法
+
+此⽅法⽤于返回该对象的真实类型 运⾏时的类型
+
+
+
+####  hashCode⽅法
+
+•1、返回该对象的⼗进制的哈希吗值
+
+ •2、hash值是由hash算法通过对象的地址、对象中的字符串、数字等，计算出来的 
+
+•3、相同的对象应当返回相同的哈希吗值，不同的对象尽量返回不同的哈希码值
+
+#### toString⽅法
+
+如果直接输出⼀个对象，那么默认会调⽤这个对象的toString⽅法，⽽toString⽅法是Object类提供的，返 回的是“对象的地址” 。但是我们⼀般输出对象希望输出的是对象的属性信息，所以可以重写⽗类的 toString⽅法
+
+####  equals⽅法
+
+Object类的equals⽅法的作⽤是⽐较两个对象是否相等。
+
+⽐较的是内存地址。其底层代码的是== 如果不想⽐较内存地址，那么需要重写equals⽅法
+
+总结：== 和 equals的区别 
+
+•两个东西都是⽤于⽐较的
+
+ •== 可以⽤于基本类型和引⽤类型
+
+ •equals只能⽤于引⽤类型的⽐较
+
+####  finalize⽅法
+
+垃圾回收器回收垃圾对象的时候，⾃动调⽤
 
 
 
@@ -1176,6 +1225,179 @@ public class Test {
 
 
 
+
+
+
+
+
+
+### 包装类
+
+为什么要有包装类
+
+ •因为基本数据类型不具有⽅法和属性。⽽引⽤数据类型可以拥有属性和⽅法，使⽤更加的灵活
+
+ •所以Java给8种基本数据类型提供对应8个包装类。包装类也就是引⽤数
+
+```java
+byte        Byte;
+short       Short;
+int         Integer;
+long        Long;
+float       Float;
+double      Double;
+char        Character;
+boolean     Boolean;
+```
+
+#### 装箱和拆箱
+
+装箱就是将基本类型转换成包装类 
+
+拆箱就是将包装类型转换成基本类型
+
+####  Number类
+
+Byte、Short、Integer、Long、Float、Double六个⼦类 
+
+提供⼀组⽅法,⽤于将其中某⼀种类型转换成其他类型 xxxValue()⽅法
+
+####  常⽤的包装类nteger 、Double
+
+
+
+####  缓冲区(⾯试题)
+
+
+
+
+
+
+
+
+
+### String类
+
+String 类代表字符串。 Java程序中的所有字符串⽂字（例如 "abc" ）都被实现为此类的实例。
+
+ •String 字符串被创建就不能修改。
+
+string与基本数据类型的区别
+1.创建对象时是否初始化:string是经过封装处理的数据类型，它内部的代码已经写好了，若创建对象的时候没有进行初始化，对象就已经被初始化为空字符了(原因可参考上篇博客对类的讲解)，当然，也可以用赋值操作符将一个有字符的字符串作为初始值。
+
+2.作用:基本类型只能用来保存值，而类除此之外还有属于自己的功能和属性。
+
+```java
+//    String str;//初始化为空字符串
+//
+//    String str=字符串；//初始化为指定字符串
+//
+//    String str(字符串)；//同上
+//
+//    String str(字符串s，位置p，数量n)；//字符串s中从p开始的n个字符组成的新字符串作为str的值
+//
+//    String str(数量n，字符c)；//初始化为n个字符c
+```
+
+String内部常用的函数
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### StringBuffer、StringBuilder类
+
+常⽤⽅法 
+
+•append(String str); //在字符串的后⾯追加字符串
+
+•delete(int start, int end)//删除字符串，从指定的下标开始和结束
+
+ •insert(int offset, String str)//在指定下标位置添加指定的字符串
+
+ •reverse() //将字符串翻转
+
+•toString()//将StringBuffer转换成String类型
+
+
+
+#### String、StringBuffer、StringBuilder区别
+
+ String、StringBuffer、StringBuilder区别 
+
+•这三个类都可以⽤于表⽰字符串 
+
+•1、String类是字符串常量类，⼀旦定义不能改变 
+
+•2、StringBuffer、StringBuilder是可变的字符串,⾃带有缓冲区。默认缓冲区⼤⼩16个字符 
+
+•3、StringBuffer是线程安全的，所以效率低 StringBuilder是线程不安全的，所以效率⾼
+
+ 总结：在⼤量的字符串拼接的时候，使⽤ StringBuffer、StringBuilder。⽽不考虑线程安全的时候，选择 StringBuilder，否则选择StringBuffe
+
+
+
+#### String类⾯试题
+
+
+
+
+
+### 时间类型 Date类 ，Calendar类，DateFormat类
+
+#### Date类
+
+表⽰⼀个特定时间，精确到毫秒
+
+#### SimpleDateFormat类 
+
+⽇期格式化类
+
+#### Calendar类 
+
+Calendar 类是⼀个抽象类，表⽰⼀个⽇历类。其包含有时间的三组⽅法
+
+ •get(字段) 获取指定字段的值
+
+ •set(字段，值) 设置指定字段的指定值
+
+ •add(字段，值) 在指定的字段添加或者减去指定的
+
+### Math
+
+数学计算的⼯具类
+
+
+
+### system
+
+系统类 常⽤⽅法：
+
+ •System.currentTimeMillis() 
+
+•System.exit
+
+
+
+
+
+### BigDecimal
 
 
 
