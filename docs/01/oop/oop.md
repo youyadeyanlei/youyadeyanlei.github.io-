@@ -909,21 +909,261 @@ class T {
 
 
 
-## 2.4接口
+## 2.4接口Interface
+
+接口是用来封装一系列的抽象方法的，把一种行为抽象出来，形成接口
+
+接口和类是同级别的，并列的
+
+接口的实现类，必须实现接口的所有抽象方法，不然还是一个抽象类
+
+接口中不能有具体的实现方法，有的必须前面加上default修饰
+
+接口可以理解为抽象类的一种极致特殊的情况
+
+接口与其他类的关系
+
+实现关系，可以单实现，可以多实现，还可以在继承一个类的同时实现多个接口
+
+接口与接口是extends，接口与实现类的关系是implements
+
+接口中成员特点：
+
+成员变量，只能用常量，默认为public final static
+
+构造方法，没有，接口不能创建对象
+
+成员方法，抽象方法，默认，public abstract
 
 
 
 
 
+乒乓球学生，姓名，年龄，学乒乓球，说英语
+
+乒乓球教练，姓名，年龄，教学乒乓球
+
+篮球学生，    姓名，年龄，学篮球
+
+篮球教练，    姓名，年龄，教学篮球
+
+抽象人，姓名，年龄
+
+抽象学生继承人，抽象学习方法
+
+接口，抽象说英语方法
+
+乒乓球学生，实现学习乒乓球方法，说英语方法
+
+篮球学生，实现学习篮球
+
+乒乓球教练，实现教学乒乓球，说英语
+
+篮球教练，实现教学。
+
+```java
+package cs.作业.Day718.lianx;
+//抽象人，
+public abstract class Person {
+    private String name;
+    private int age;
+
+    public Person() {
+    }
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+```
+
+```java
+package cs.作业.Day718.lianx;
+//运动学生
+public abstract class Sporter extends Person {
+
+    public Sporter() {
+    }
+
+    public Sporter(String name, int age) {
+        super(name, age);
+    }
+
+    public abstract void study();
+}
+```
+
+
+
+```java
+package cs.作业.Day718.lianx;
+//教练
+import cs.作业.Day718.lianx.Person;
+
+public abstract class Coach extends Person {
+    public Coach() {
+    }
+
+    public Coach(String name, int age) {
+        super(name, age);
+    }
+
+    public abstract void teach();
+}
 
 
 
 
 
+package cs.作业.Day718.lianx;
+//接口说英语
+public interface English {
+    public abstract void speakEnglish();
+}
 
+```
 
+```java
+package cs.作业.Day718.lianx;
 
+public class Pingpang extends Sporter implements English {
+    public Pingpang() {
+    }
 
+    public Pingpang(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    public void speakEnglish() {
+        System.out.println("乒乓球运动员说英语");
+    }
+
+    @Override
+    public void study() {
+
+        System.out.println("乒乓球运动员在学习打乒乓球");
+    }
+}
+```
+
+```java
+package cs.作业.Day718.lianx;
+
+import cs.作业.Day718.lianx.Sporter;
+
+public class Basketball extends Sporter {
+    @Override
+    public void study() {
+        System.out.println("篮球运动员在学习打篮球");
+    }
+}
+```
+
+```java
+package cs.作业.Day718.lianx;
+
+public class Pingpangcoach extends Coach implements English {
+    public Pingpangcoach() {
+    }
+
+    public Pingpangcoach(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    public void teach() {
+        System.out.println("乒乓球教练在教学");
+    }
+
+    @Override
+    public void speakEnglish() {
+
+        System.out.println("乒乓球教练在说英语");
+    }
+}
+```
+
+```java
+package cs.作业.Day718.lianx;
+
+import cs.作业.Day718.lianx.Coach;
+
+public class BasketballCoach extends Coach {
+    public BasketballCoach() {
+    }
+
+    public BasketballCoach(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    public void teach() {
+
+        System.out.println("篮球教练教学");
+    }
+}
+```
+
+```java
+package cs.作业.Day718.lianx;
+
+public class Test {
+    public static void main(String[] args) {
+
+        Pingpangcoach pingpangcoach=new Pingpangcoach("我是教练",32);
+        Basketball basketball=new Basketball();
+        basketball.setAge(22);
+        basketball.setName("篮球练习生");
+        pingpangcoach.speakEnglish();
+        pingpangcoach.teach();
+        basketball.study();
+        System.out.println(pingpangcoach.getName()+pingpangcoach.getAge());
+
+    }
+}
+```
+
+接口代码规则，是行为的抽象。想要让那个类拥有一个行为，就让这个类实现对应的接口就可以了。
+
+当一个方法的参数是接口时，可以传递接口所有实现类的对象，这种方式叫做接口的多态。
+
+## 2.5内部类
+
+内部类表示的事物是外部类的一部分
+
+内部类单独出现没有意义
+
+内部类的特点
+
+内部类可以直接访问外部类的成员，，包含私有的
+
+外部类访问内部类的成员，必须创建对象
+
+成员内部类
+
+静态内部类
+
+局部内部类
+
+匿名内部类
 
 
 
