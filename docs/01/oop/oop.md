@@ -1187,6 +1187,21 @@ public class Test {
 
 此⽅法⽤于返回该对象的真实类型 运⾏时的类型
 
+- - - ```java
+      public final 类<?> getClass()
+      ```
+
+      返回此`Object`的运行时类。返回的`类`对象是被表示类的`static synchronized`方法锁定的对象。
+
+      **实际结果的类型是`Class<? extends  |X|>`其中`|X|`是静态类型上其表达的擦除`getClass`被调用。**  例如，在此代码片段中不需要转换： 
+
+      `Number n = 0;` 
+      `Class<? extends Number> c =  n.getClass();` 
+
+      - 结果 
+
+        表示 `类`对象的运行时类的Class对象。
+
 
 
 ####  hashCode⽅法
@@ -1197,9 +1212,21 @@ public class Test {
 
 •3、相同的对象应当返回相同的哈希吗值，不同的对象尽量返回不同的哈希码值
 
+
+
+
+
 #### toString⽅法
 
 如果直接输出⼀个对象，那么默认会调⽤这个对象的toString⽅法，⽽toString⽅法是Object类提供的，返 回的是“对象的地址” 。但是我们⼀般输出对象希望输出的是对象的属性信息，所以可以重写⽗类的 toString⽅法
+
+- - - 该`toString`类方法`Object`返回一个由其中的对象是一个实例，该符号字符`的类的名称的字符串`@`  ”和对象的哈希码的无符号的十六进制表示。 换句话说，这个方法返回一个等于下列值的字符串： 
+
+      > ` getClass().getName() + '@' + Integer.toHexString(hashCode()) `
+
+      - 结果 
+
+        对象的字符串表示形式。
 
 ####  equals⽅法
 
@@ -1270,7 +1297,7 @@ Byte、Short、Integer、Long、Float、Double六个⼦类
 
 
 
-
+Integer在-128到127之间在常量池（缓冲区）中，值能直接相等
 
 
 
@@ -1355,7 +1382,67 @@ String内部常用的函数
 
 #### String类⾯试题
 
+```java
+package cs.作业.Day719;
 
+public class Demo02 {
+
+    public static void main(String[] args) {
+        String s1 = "ab";
+        String s2 = "c";
+        String s3 = new String("abc");
+        String str1 = "abc";
+        String str2 = "abc";
+        String str3 = "ab" + "c";
+        String str4 = s1 + s2;
+        String str5 = new String("abc");
+        String str6 = new String("ab") + "c";
+        String str7 = s3.intern();
+/**
+ * String str1 = "abc";
+ * String str2 = "abc";
+ * 这个“abc”存放在常量池中，
+ * 常量池的特点：
+ * ⾸先会去常量池中找是否有“abc”这个常量字符串，如果有直接⽤str1指向它，
+ * 如果没有将“abc”放到常量池中，⽤str1指向它
+ * 再使⽤去常量池中找有没有“abc”,这个时候已经有了，直接使⽤str2指向它。
+ */
+        System.out.println(str1 == str2);//true
+/**
+ * String str3 = "ab" +"c";
+ * 因为“ab”是常量与“c”拼接之后也会在常量池中。
+ */
+        System.out.println(str1 == str3);//true
+/**
+ * String s1 = "ab";
+ * String s2 = "c";
+ * 当s1和s2拼接的时候，jdk会将s1和s2转换成StringBuilder类型，然后进⾏拼接操作，
+ * 最终的内容实在堆内存中。
+ */
+        System.out.println(str1 == str4);//false
+/**
+ * String str1 = "abc"; 在常量池
+ * String str5 = new String("abc"); 在堆内存
+ */
+        System.out.println(str1 == str5);//false
+/**
+ * String str5 = new String("abc"); 在堆内存
+ * String str6 = new String("ab")+"c";在堆内存
+ */
+        System.out.println(str5 == str6);//false
+/**
+ * String str1 = "abc"; 在常量池
+ * String str6 = new String("ab")+"c"; 在堆内存
+ */
+        System.out.println(str1 == str6);//fals
+        /**
+         * String str7 = s3.intern();
+         * intern⽅法的含义：将String类型的对象指向常量池，如果有直接指向，如果没有放⼀个指向
+         */
+        System.out.println(str1 == str7);//true
+    }
+}
+```
 
 
 
@@ -1365,9 +1452,32 @@ String内部常用的函数
 
 表⽰⼀个特定时间，精确到毫秒
 
+```java
+public static void main(String[] args) {
+    //创建一个Date类的对象，显示系统时间
+    Date date = new Date();
+    System.out.println(date);
+    //year 年份  month月份  date 日期
+    Date date1=new Date(2000-2023,1,18);
+    System.out.println(date1);
+    Date date2=new Date();
+    System.out.println(date2.getTime()/1000/60/60/24/365);
+
+}
+```
+
 #### SimpleDateFormat类 
 
 ⽇期格式化类
+
+```java
+public static void main(String[] args) {
+    Date date=new Date();
+    SimpleDateFormat sdf=new SimpleDateFormat();
+    String time=sdf.format(date);
+    System.out.println(time);
+}
+```
 
 #### Calendar类 
 
@@ -1379,9 +1489,68 @@ Calendar 类是⼀个抽象类，表⽰⼀个⽇历类。其包含有时间的�
 
  •add(字段，值) 在指定的字段添加或者减去指定的
 
+```java
+package cs.作业.Day719;
+
+import java.util.Calendar;
+
+public class Demo05 {
+    public static void main(String[] args) {
+        Calendar calendar=Calendar.getInstance();
+        //设置时间
+        calendar.set(2022,7,19);
+        int workDay=calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+        for (int i = 0; i < workDay; i++) {
+            System.out.println("\t");
+        }
+        //获取当前月份
+        int month =calendar.get(Calendar.MONTH);
+        while (month==7){
+            int day =calendar.get(Calendar.DATE);
+            System.out.println(day);
+            workDay =calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+            if (workDay==Calendar.SATURDAY){
+                System.out.println();
+            }
+            calendar.add(Calendar.DATE,1);
+            month=calendar.get(Calendar.MONTH);
+        }
+
+    }
+}
+```
+
 ### Math
 
 数学计算的⼯具类
+
+```java
+package cs.作业.Day719;
+
+public class Demo07 {
+    public static void main(String[] args) {
+        //2的10次方
+        System.out.println(Math.pow(2,10));
+        //a的平方根
+        System.out.println(Math.sqrt(9));
+        //a的立方根
+        System.out.println(Math.cbrt(27));
+
+        //向上取整
+        System.out.println(Math.ceil(10.2));
+        //向下取整
+        System.out.println(Math.floor(10.9));
+        //四舍五入
+        System.out.println(Math.round(10.5));
+        System.out.println(Math.round(10.2));
+        //随机数[0,1)
+        System.out.println(Math.random());
+        //随机2位数
+        System.out.println((int)(Math.random()*100));
+
+    }
+}
+```
 
 
 
@@ -1393,17 +1562,303 @@ Calendar 类是⼀个抽象类，表⽰⼀个⽇历类。其包含有时间的�
 
 •System.exit
 
+```java
+package cs.作业.Day719;
 
+import java.text.SimpleDateFormat;
+
+public class Demo06 {
+
+    public static void main(String[] args) {
+//System 系统类
+//获取系统当前时间，返回⾃1970年开始以来时间的毫秒数
+        System.out.println(System.currentTimeMillis());
+//格式化时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String time = sdf.format(System.currentTimeMillis());
+        System.out.println(time);
+//结束当前虚拟机运⾏ 0表⽰正常退出
+        System.exit(0);
+        System.out.println("执⾏吗？");
+    }
+}
+```
 
 
 
 ### BigDecimal
 
+待补....
+
+
+
+## 集合
+
+对象的容器，定义了对多个对象进行操作的常用方法。可实现数组的功能
+
+和数组的区别
+
+1.数组长度固定，集合长度不固定
+
+2.数组可以存储基本数据类型和应用类型，集合只能存储引用类型
+
+
+
+java集合主要由2大体系构成，分别是Collection体系和Map体系，其中Collection和Map分别是2大体系中的顶层接口。
+
+Collection主要有三个子接口，分别为List(列表)、Set(集)、Queue(队列)。其中，List、Queue中的元素有序可重复，而Set中的元素无序不可重复。
+
+List中主要有ArrayList、LinkedList两个实现类；Set中则是有HashSet实现类；而Queue是在JDK1.5后才出现的新集合，主要以数组和链表两种形式存在。
+
+Map同属于java.util包中，是集合的一部分，但与Collection是相互独立的，没有任何关系。Map中都是以key-value的形式存在，其中key必须唯一，主要有HashMap、HashTable、treeMap三个实现类。
+
+
+
+
+### 1.Collectin体系集合
+
+#### 1.Collection父接口
+
+特点，代表一组任意类型的对象，无序，无下标，不能重复
+
+boolean add
+
+集合的顶层接口，不能被实例化
+
+根接口Collection
+ 
+
+i. 常用子接口
+
+  1. List
+        实现类：ArrayList、Vector、LinkedList
+
+  2. Set
+        实现类：HashSet、TreeSet
+
+  3. 添加功能
+         i. boolean add(object obj)添加一个元素
+         ii. boolean addAll(Collection c)将集合c的全部元素添加到原集合元素后返回true
+         iii. 添加功能永远返回true
+
+  4.  删除功能
+         i. void clear();移除所有元素
+         ii. boolean remove(Object o)移除一个元素
+         iii. boolean removeAll（Collection c）移除一个集合的元素，只要有一个被移除就返回true，改变原集合，删除原集合中和c中相同的元素
+         iv. 删除功能只有删除成功后才返回true
+
+  5.  判断功能
+         i. boolean contain(object o)判断集合中是否包含指定的元素。
+         ii. boolean containsAll(Collection c)判断原集合中是否包含指定集合c的所有元素，有则true，
+         iii. boolean isEmpty()判断集合是否为空
+
+  6. 获取功能
+         i. Iterator iterator()迭代器，集合的专用方式，实现遍历的功能
+         ii. Object next()获取当前元素，并移动到下一个位置
+         iii. boolean hasNext()判断此位置是否有元素
+         iv. 迭代器遍历实例在下面
+
+  7. 长度功能
+         i. int size()元素的个数
+         ii. 数组和字符串中都是length()方法获取元素个数，集合中是size()方法
+          因为object包括集合、字符串、数组，所以其不能直接用length方法。
+
+  8.  交集功能boolean retainAll(Collection c)
+         两个集合交集的元素给原集合，并判断原集合是否改变，改变则true，不变则false
+
+  9. 把集合转换为数组
+         i. Object [] toArray()
+
+        ```java
+        package cs.作业.Day720;
+        
+        import java.util.ArrayList;
+        import java.util.Collection;
+        import java.util.Iterator;
+        
+        /**
+         * 1.添加元素
+         * 2.删除元素
+         * 3.遍历元素
+         * 4.判断
+         */
+        public class Demo01 {
+            public static void main(String[] args) {
+                Collection collection=new ArrayList();
+                collection.add("西瓜");
+                collection.add("葡萄");
+                collection.add("苹果");
+                System.out.println(collection.size());
+                System.out.println(collection);
+        
+                collection.remove("葡萄");
+        //        collection.clear();
+                System.out.println(collection.size());
+                System.out.println(collection);
+        
+                for (Object object:collection     ) {
+                    System.out.println(object);
+                }
+                collection.iterator();
+                System.out.println(collection.size());
+        
+                Iterator it =collection.iterator();
+                while ((it.hasNext())){
+                    String o= (String) it.next();
+                    System.out.println(o);
+                  //  it.remove();
+                }
+        
+                System.out.println(collection.size());
+        
+                System.out.println(collection.contains("西瓜"));
+                System.out.println(collection.size());
+        
+        
+            }
+        }
+        ```
 
 
 
 
 
+
+
+### 2.List
+
+特点，有序，有下标，元素可以重复
+
+```java
+package cs.作业.Day720;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+/**
+ * List接口的使用
+ * 特点有序，有下标，可以重复
+ *
+ */
+public class Demo03 {
+    public static void main(String[] args) {
+        //创建集合对象
+        List list=new ArrayList<>();
+        list.add("水果");
+        list.add("苹果");
+        list.add("小米");
+        System.out.println(list.size());
+        System.out.println(list.toString());
+
+        list.remove("水果");
+        System.out.println(list.size());
+        System.out.println(list.toString());
+
+        //
+        for (int i = 0; i <list.size() ; i++) {
+            System.out.println(list.get(i));
+        }
+        for (Object o:list
+             ) {
+            System.out.println(o);
+        }
+        Iterator iterator=list.iterator();
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+        ListIterator listIterator = list.listIterator();
+        System.out.println("---------------");
+        //从前往后
+        while (listIterator.hasNext()){
+            System.out.println(listIterator.nextIndex()+""+listIterator.next());
+        }
+        while (listIterator.hasPrevious()){
+            System.out.println(listIterator.previousIndex()+""+ listIterator.previous());
+        }
+
+        //判断
+        System.out.println(list.contains("苹果"));
+        System.out.println(list.isEmpty());
+        System.out.println(list.indexOf("小米"));
+
+    }
+}
+```
+
+
+
+```java
+package cs.作业.Day720;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Demo04 {
+    public static void main(String[] args) {
+        List list =new ArrayList();
+        list.add(20);
+        //自动装箱
+        list.add(30);
+        list.add(40);
+        list.add(50);
+        list.add(60);
+        System.out.println("+++"+list.size());
+        System.out.println(list.toString());
+
+        //list.remove("20");
+     //   list.remove((Object) 20);
+   //     list.remove(new Integer(30));
+        System.out.println(list.toString());
+//sublist
+        List subList = list.subList(1, 3);
+        System.out.println(subList.toString());
+
+
+    }
+}
+```
+
+#### 1.ArrayList
+
+数组·结构实现【数组】查询快，增删慢,不安全
+
+1，ArrayList底层通过数组实现，随着元素的增加而动态扩容。
+
+2，ArrayList是Java集合框架中使用最多的一个类，是一个数组队列，线程不安全集合
+
+它继承于AbstractList，实现了List, RandomAccess, Cloneable, Serializable接口。
+
+1，ArrayList实现List，得到了List集合框架基础功能；
+
+2，ArrayList实现RandomAccess，获得了快速随机访问存储元素的功能，RandomAccess是一个标记接口，没有任何方法；
+
+3，ArrayList实现Cloneable，得到了clone()方法，可以实现克隆功能；
+
+4，ArrayList实现Serializable，表示可以被序列化，通过序列化去传输，典型的应用就是hessian协议。
+
+**ArrayList集合的特点：**
+
+> - 容量不固定，随着容量的增加而动态扩容（阈值基本不会达到）
+> - 有序集合（插入的顺序==输出的顺序）
+> - 插入的元素可以为null
+> - 增删改查效率更高（相对于LinkedList来说）
+> - 线程不安全
+
+#### 2.LinkedList
+
+链表结构实现，增删快，查询慢
+
+#### 3.Vector
+
+数组实现，查询快，增删慢
+
+运行慢，线程安全
+
+
+
+### 6.泛型
 
 
 

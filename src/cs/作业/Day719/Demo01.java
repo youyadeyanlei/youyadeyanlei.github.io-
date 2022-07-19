@@ -1,7 +1,8 @@
 package cs.作业.Day719;
 
 public class Demo01 {
-    byte        Byte;
+
+     byte        Byte;
     short       Short;
     int         Integer;
     long        Long;
