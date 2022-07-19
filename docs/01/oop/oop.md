@@ -1838,6 +1838,10 @@ public class Demo04 {
 
 4，ArrayList实现Serializable，表示可以被序列化，通过序列化去传输，典型的应用就是hessian协议。
 
+默认容量大小是10，没有添加元素为0
+
+elementDate用来存放元素的数组
+
 **ArrayList集合的特点：**
 
 > - 容量不固定，随着容量的增加而动态扩容（阈值基本不会达到）
