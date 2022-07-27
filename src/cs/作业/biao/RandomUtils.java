@@ -65,4 +65,15 @@ public class RandomUtils {
         return genders[random.nextInt(2)];
     }
 
+    public static void longSleep() {
+    }
+
+    public static void longSleep(int min, int max) {
+        int time = randomNumber(min, max);
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
