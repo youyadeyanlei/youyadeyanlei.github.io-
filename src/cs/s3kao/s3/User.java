@@ -12,7 +12,8 @@ public class User {
     private int age;
     private boolean sex=true;
 
-
+    public User() {
+    }
 
 
     public String getName() {
