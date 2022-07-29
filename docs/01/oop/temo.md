@@ -94,15 +94,99 @@
 
 
 
+## DCl单例模式中volatile关键字的作用
+
+首先单列模式分，懒汉式和饿汉式
+
+懒汉式中要进行双重检查锁，
+
+还要加volatile关键字，
+
+还是能被反射影响，
+
+可以采用枚举。
 
 
 
+在java内存模型中，volatile 关键字作用可以是保证可见性或者禁止指令重排。这里是因为 singleton = new Singleton() ，它并非是一个原子操作，事实上，在 JVM 中上述语句至少做了以下这 3 件事：
+
+第一步是给 singleton 分配内存空间；
+
+第二步开始调用 Singleton 的构造函数等，来初始化 singleton；
+
+第三步，将 singleton 对象指向分配的内存空间（执行完这步 singleton 就不是 null 了）。
+
+这里需要留意一下 1-2-3 的顺序，因为存在指令重排序的优化，也就是说第 2 步和第 3 步的顺序是不能保证的，最终的执行顺序，可能是 1-2-3，也有可能是 1-3-2。
+
+如果是 1-3-2，那么在第 3 步执行完以后，singleton 就不是 null 了，可是这时第 2 步并没有执行，singleton 对象未完成初始化，它的属性的值可能不是我们所预期的值。假设此时线程 2 进入 getInstance 方法，由于 singleton 已经不是 null 了，所以会通过第一重检查并直接返回，但其实这时的 singleton 并没有完成初始化，所以使用这个实例的时候会报错
 
 
 
+使用了 volatile 之后，相当于是表明了该字段的更新可能是在其他线程中发生的，因此应确保在读取另一个线程写入的值时，可以顺利执行接下来所需的操作。在 JDK 5 以及后续版本所使用的 JMM 中，在使用了 volatile 后，会一定程度禁止相关语句的重排序，从而避免了上述由于重排序所导致的读取到不完整对象的问题的发生。
 
 
+```java
+package Design.behavior;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+/**
+ * 懒汉式
+ */
+public class LazyTest {
+    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+//有反射就不安全
+        LazySing lazySing = LazySing.getInstance();
+        Constructor<LazySing> declaredConstructor = LazySing.class.getDeclaredConstructor(null);
+        declaredConstructor.setAccessible(true);//无视私有
+        LazySing instance = declaredConstructor.newInstance();
+        System.out.println(instance);
+        System.out.println(lazySing);
+
+
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                LazySing.getInstance();
+            }).start();
+        }
+    }
+}
+
+class LazySing {
+    //必须加volatile
+    private static boolean key = false;
+    public volatile static LazySing instance;
+
+    //私有的构造函数，防止从外部new
+    private LazySing() {
+        System.out.println(Thread.currentThread().getName() + "ok");
+        //防止反射
+        synchronized ((LazySing.class)) {
+            if (key == false) {
+                key = true;
+            } else {
+                throw new RuntimeException("异常");
+            }
+        }
+    }
+
+    //防止多次实例化
+    public static LazySing getInstance() {
+//双重检查锁 DCL懒汉式,
+
+        if (instance == null) {
+            synchronized (LazySing.class) {
+                if (instance == null) {
+                    instance = new LazySing();
+//加volatile
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
 
 
 
