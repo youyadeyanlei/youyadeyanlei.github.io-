@@ -10,7 +10,6 @@ public class Hungry {
 
     }
     private final static Hungry HUNGRY=new Hungry();
-
     private static Hungry getInstance(){
         return HUNGRY;
     }

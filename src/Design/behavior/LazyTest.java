@@ -15,8 +15,6 @@ public class LazyTest {
         LazySing instance = declaredConstructor.newInstance();
         System.out.println(instance);
         System.out.println(lazySing);
-
-
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 LazySing.getInstance();
@@ -26,6 +24,7 @@ public class LazyTest {
 }
 
 class LazySing {
+
     //必须加volatile
     private static boolean key = false;
     public volatile static LazySing instance;
@@ -57,4 +56,21 @@ class LazySing {
         }
         return instance;
     }
+}
+class LazySingle{
+    private volatile static LazySingle instance;
+
+    private LazySingle() {
+    }
+    public static LazySingle getInstance(){
+        if (instance == null) {
+            synchronized (LazySingle.class){
+                if (instance == null) {
+                    instance = new LazySingle();
+                }
+            }
+        }
+    return instance;
+    }
+
 }
